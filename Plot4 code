@@ -1,0 +1,18 @@
+#reading data from local volume
+
+filename<-file("D:\\Self-made\\Data science\\JOHNS HOPKINS UNIVERSITY\\household_power_consumption.txt")
+projectdata <- read.table(text = grep("^[1,2]/2/2007", readLines(filename), value = TRUE), col.names = c("Date", "Time", "Global_active_power", "Global_reactive_power", "Voltage", "Global_intensity", "Sub_metering_1", "Sub_metering_2", "Sub_metering_3"), sep = ";", header = TRUE)
+
+#ploting and saving as png
+png(file = "Plot4.png", width = 480, height = 480, units = "px")
+par(mfrow=c(2,2))
+hist(projectdata$Global_active_power,col = "red",xlab = "Global_active_power",main = "Global active power")
+with(projectdata,plot(Voltage~DateTime,type = "l",xlab=""))
+with(projectdata, {
+  plot(Sub_metering_1 ~ DateTime, col="black", type = "l", ylab = "Energy sub metering", xlab = "")
+  lines(Sub_metering_2 ~ DateTime, col = 'red')
+  lines(Sub_metering_3 ~ DateTime, col = 'blue')
+}
+)
+legend("topright", col = c("black", "red", "blue"), lty = 1, lwd = 2, legend = c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"))
+with(projectdata,plot(Global_reactive_power~DateTime,type="l"))
